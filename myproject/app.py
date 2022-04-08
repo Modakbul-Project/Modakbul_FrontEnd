@@ -27,6 +27,11 @@ def my_page():
         return render_template('mypage.html')
     else:
         return redirect('/login')
+
+@app.route('/meet')
+def meet_page():
+    return render_template('meetpage.html')
+
 @app.route('/login')
 def login():
     return render_template('login.html')
