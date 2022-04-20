@@ -101,39 +101,18 @@
         flex:3 1 0;
         position: relative;
         overflow: hidden;
+        background-color: white;
+        border: 1px solid lightgray;
+        padding-left: 0.5rem;
     }    
     
-    .meetBoard #board{
-        width: 100%;
-        height: 100%;
-        background-color: bisque;
-        flex-wrap: nowrap;
-        overflow: hidden;
+    .sub, .members{
+        width:100%;
     }
-
-    .meetBoard #calender{
-        width: 100%;
-        height: 100%;
-        filter: drop-shadow(0 2px 5px lightgray);
-        background-color: white;
-    }
-    
-    .meetBoard #toggleBt{
-        background-color: aquamarine;
-        display:inline-block;
-        position: absolute;
-        bottom:0;
-        right: 80px;
-        margin: 10px;
-    }
-    
-    .meetBoard #membersBt{
-        background-color: skyblue;
-        display:inline-block;
-        position: absolute;
-        bottom:0;
-        right: 0;
-        margin: 10px;
+    .meetBoard h2{
+        text-align: left;
+        padding: 2rem;
+        margin: 0;
     }
     
     .profileList{
@@ -141,7 +120,7 @@
     }
     
     .profileList .subProfile{
-        padding-right: 1rem;
+        padding-left: 2rem;
         text-align: center;
     }
     
@@ -149,20 +128,47 @@
         position: relative;
         display: inline-block;
         background-color:gray;
-        width:70px;
-        height:70px;
+        width:100px;
+        height:100px;
         border-radius: 50%;
     }
     
     .subProfile .subName{
-        margin-top: 0.2rem;
-        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        font-size: 1.2rem;
         font-weight: bold;
     }
     
     .subProfile .subLv{
         font-size:0.5rem;
         color:gray;
+    }
+    
+    .subProfile button{
+        border: 0;
+        border-radius: 50px;
+        width:48px;
+        height:2rem;
+        margin-top: 0.5rem;
+        color:white;
+    }
+    
+    .subProfile button:nth-of-type(1){
+        margin-right: 5px;
+        background-color: gray;
+    }
+    
+    .subProfile button:nth-of-type(2){
+        background-color: limegreen;
+    }
+    
+    .meetBoard #toggleBt{
+        background-color: aquamarine;
+        display:inline-block;
+        position: absolute;
+        bottom:0;
+        right: 0;
+        margin: 10px;
     }
     
     .meetNotice{
@@ -203,8 +209,14 @@
     
     .meetNotice li{
         text-align: justify;
-        list-style:square;
+        list-style:none;
         padding-left: 0;
+        display: flex;
+        justify-content: space-between;
+    }
+    
+    .meetNotice li div{
+        
     }
     
         @media(max-width:1000px){
@@ -287,19 +299,21 @@
               <div class="meetPic">a</div>
                <h1 class="meetTitle">모임명</h1>
                </div>
-               <a class="meetOption" href="/meetadmin">모임관리</a>
+               <a class="meetOption" href="/meet">모임홈</a>
            </div>
            <div class="meetContentsWrap">
                <div class="meetBoard">
-                  <div class="members">
+                  <div class="sub">
+                  <h2>참여 신청</h2>
                    <div class="profileList">
                        
                        <div class="subProfile">
                         <div class="profilePic">
                             <img src="" alt="">
                         </div>
-                        <div class="subName"><a href="/profile">김수한무거북</a></div>
+                        <div class="subName">내이름</div>
                         <div class="subLv">Lv.23</div>
+                        <button>X</button><button>V</button>
                    </div>
                    <div class="subProfile">
                         <div class="profilePic">
@@ -307,29 +321,40 @@
                         </div>
                         <div class="subName">내이름</div>
                         <div class="subLv">Lv.23</div>
+                        <button>X</button><button>V</button>
+                   </div>
+                   
+                   </div>
+                </div>
+                <div class="members">
+                  <h2>멤버 목록</h2>
+                   <div class="profileList">
+                       
+                       <div class="subProfile">
+                        <div class="profilePic">
+                            <img src="" alt="">
+                        </div>
+                        <div class="subName">내이름</div>
+                        <div class="subLv">Lv.23</div>
+                        <button>탈퇴</button>
+                   </div>
+                   <div class="subProfile">
+                        <div class="profilePic">
+                            <img src="" alt="">
+                        </div>
+                        <div class="subName">내이름</div>
+                        <div class="subLv">Lv.23</div>
+                        <button>탈퇴</button>
                    </div> 
                 </div>   
                </div>
-                   <div id="board">
-                   </div>
-                   <div id="calender">
-                       calender
-                   </div>
-                   <div id="toggleBt">
-                       toggle
-                   </div>
-                   <div id="membersBt">
-                       members
+               <div id="toggleBt">
+                       this is toggle
                    </div>
                    <script>
-                    $('.members').hide();
-                    $('#calender').hide();
+                    $('.sub').hide();
                     $('#toggleBt').click(function(){
-                        $('#board').toggle();
-                        $('#calender').toggle();
-                    });
-                       
-                    $('#membersBt').click(function(){
+                        $('.sub').toggle();
                         $('.members').toggle();
                     });
                    </script>
@@ -339,70 +364,7 @@
                    <div class="notice">
                        <ul>
                        <li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li>
-                       <li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
+                           <span>공지1</span> <div class="noticeAdmin"><a href="#">수정</a> <a href="#">삭제</a></div>
                        </li>
                    </ul>
                    </div>

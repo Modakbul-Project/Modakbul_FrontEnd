@@ -30,7 +30,24 @@ def my_page():
 
 @app.route('/meet')
 def meet_page():
-    return render_template('meetpage.html')
+    if 'user' in session:  # 로그인 여부 확인
+        return render_template('meetpage.html')
+    else:
+        return redirect('/login')
+
+@app.route('/meetadmin')
+def meet_admin():
+    if 'user' in session:  # 로그인 여부 확인
+        return render_template('meetadmin.html')
+    else:
+        return redirect('/login')
+
+@app.route('/profile')
+def profile():
+    if 'user' in session:  # 로그인 여부 확인
+        return render_template('profile.html')
+    else:
+        return redirect('/login')
 
 @app.route('/login')
 def login():
