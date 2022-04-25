@@ -28,10 +28,39 @@ def my_page():
     else:
         return redirect('/login')
 
+@app.route('/makepage')
+def make_page():
+    if 'user' in session:  # 로그인 여부 확인
+        return render_template('makemeet.html')
+    else:
+        return redirect('/login')
+
+@app.route('/mymeets')
+def my_meets():
+    if 'user' in session:  # 로그인 여부 확인
+        return render_template('mymeet.html')
+    else:
+        return redirect('/login')
+
+@app.route('/pfedit')
+def profile_edit():
+    if 'user' in session:  # 로그인 여부 확인
+        return render_template('profileedit.html')
+    else:
+        return redirect('/login')
+
 @app.route('/meet')
-def meet_page():
+def meet():
     if 'user' in session:  # 로그인 여부 확인
         return render_template('meetpage.html')
+    else:
+        return redirect('/login')
+
+
+@app.route('/makenotice')
+def make_notice():
+    if 'user' in session:  # 로그인 여부 확인
+        return render_template('makenotice.html')
     else:
         return redirect('/login')
 
@@ -41,6 +70,7 @@ def meet_admin():
         return render_template('meetadmin.html')
     else:
         return redirect('/login')
+
 
 @app.route('/profile')
 def profile():
