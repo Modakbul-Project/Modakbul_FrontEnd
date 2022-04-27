@@ -1,5 +1,3 @@
-import json
-
 from flask import Flask, render_template, request, redirect, session, url_for, json
 from authlib.integrations.flask_client import OAuth
 import os
