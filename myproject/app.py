@@ -22,7 +22,7 @@ def test():
 @app.route('/mypage')
 def my_page():
     if 'user' in session:  # 로그인 여부 확인
-        return render_template('mypage.html')
+        return render_template('mypage.html', mypage=0)
     else:
         return redirect('/login')
 
@@ -36,7 +36,7 @@ def make_page():
 @app.route('/mymeets')
 def my_meets():
     if 'user' in session:  # 로그인 여부 확인
-        return render_template('mymeet.html')
+        return render_template('mypage.html', mypage=1)
     else:
         return redirect('/login')
 
