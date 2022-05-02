@@ -50,7 +50,7 @@ def profile_edit():
 @app.route('/meet')
 def meet():
     if 'user' in session:  # 로그인 여부 확인
-        return render_template('meetpage.html')
+        return render_template('meetpage.html', admin=0)
     else:
         return redirect('/login')
 
@@ -65,7 +65,7 @@ def make_notice():
 @app.route('/meetadmin')
 def meet_admin():
     if 'user' in session:  # 로그인 여부 확인
-        return render_template('meetadmin.html')
+        return render_template('meetpage.html', admin=1)
     else:
         return redirect('/login')
 
