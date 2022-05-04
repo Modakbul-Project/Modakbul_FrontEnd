@@ -188,7 +188,7 @@
         font-weight: bold;
     }
 
-    form{
+    .detailsWrap form{
         display: flex;
         flex-direction: column;
         flex:1;

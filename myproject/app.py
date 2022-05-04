@@ -1,15 +1,20 @@
+import oauth2client.client
 from flask import Flask, render_template, request, redirect, session, url_for, json
 from authlib.integrations.flask_client import OAuth
+from apiclient import discovery
 import os
 
 app = Flask(__name__) #플라스크 애플리케이션 생성, name=모듈명=pybo.py
 
 app.config['SECRET_KEY']=os.urandom(12)
-#app.config['GOOGLE_OAUTH2_CLIENT_SECRETS_FILE'] = './static/client_secret_.json'
 oauth = OAuth(app)
-with open('./static/client_secret.json') as f:
+with open('./static/client_secret2.json') as f:
     json_data=json.load(f)
 
+@app.route('/testcal')
+def testcal():
+    calendars = []
+    service = discovery.build('calendar', 'v3', oauth.google.authorize_access_token)
 @app.route('/')
 def test():
     if 'user' in session:
@@ -97,16 +102,18 @@ def google():
     )
     # Redirect to google_auth function
     redirect_uri = url_for('google_auth', _external=True)
-    print(redirect_uri)
     return oauth.google.authorize_redirect(redirect_uri)
 
 @app.route('/google/auth/')
 def google_auth():
     token = oauth.google.authorize_access_token()
     user = token.get('userinfo')
+    tok = token.get('access_token')
     if user:
         session['user'] = user
+        session['tk'] = tok
     print(" Google User ", user)
+    print(" eccess token :  ", tok)
     return redirect('/')
 
 @app.route("/logout", methods=["GET"])

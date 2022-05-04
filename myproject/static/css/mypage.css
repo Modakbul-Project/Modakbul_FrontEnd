@@ -1,9 +1,8 @@
 @charset "utf-8";
 
-    .contents{
+    .contents .contents{
         display: flex;
         justify-content:center;
-        height: 100%;
         flex-direction: column;
         overflow: hidden;
     }
@@ -35,7 +34,13 @@
         height:150px;
         background-color: lightgray;
         border-radius: 50%;
-        display: inline-block;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+}
+    .profilepic img{
+        width:100%;
     }
 
     .sidePage .listTitle{
@@ -59,4 +64,3 @@
         padding-left: 0;
         text-align: left;
     }
-

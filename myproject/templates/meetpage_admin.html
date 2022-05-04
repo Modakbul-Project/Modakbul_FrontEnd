@@ -71,7 +71,7 @@
                    <div class="notice">
                        <ul>
                        <li>
-                           <span>공지1</span> <div class="noticeAdmin">수정 삭제</div>
+                           <span>공지1</span> <div class="noticeAdmin"><span>수정</span> <span>삭제</span></div>
                        </li>
                    </ul>
                    </div>
@@ -82,7 +82,7 @@
     $(".subProfile").click(function(){
         $(".detailsBg").first().show();
     })
-    $(".noticeAdmin").click(function(){
+    $(".noticeAdmin span").first().click(function(){
         $(".detailsBg").eq(1).show();
     })
 </script>
