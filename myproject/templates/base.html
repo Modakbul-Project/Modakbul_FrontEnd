@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <link rel = "stylesheet" href="static/css/base.css">
+    {% block head %}
+    <title>모닥불{% block title %}{% endblock %}</title>
+    {% endblock %}
+</head>
+<body>
+   <div class="main container">
+       <header class="container">
+           <a class="logo" href="/"> 모닥불 </a>
+           <nav class="navbar">
+           <div class="search"><form action="#" method="post">
+               <input type="text" name="keyword" placeholder="검색">
+               <input type="submit" value="src">
+           </form></div>
+           <button class="mypage"><a href="/mypage">mypage</a></button>
+           </nav>
+        </header>
+       <div class="contents conatainer">
+           {% block body %}
+           {% endblock %}
+        </div>
+       <div class="footer conatainer">
+           {% block footer %}
+           {% endblock %}
+        </div>
+   </div>
+</body>
+</html>
