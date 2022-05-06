@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block title %} : main{% endblock %}
+{% block head %}
+    <script src="{{ url_for('static', filename='jquery.mousewheel.js') }}"></script>
+    <link rel = "stylesheet" href="static/css/main.css">
+    {{ super() }}
+{% endblock %}
+{% block body %}
+           <div class="category"> <form action="#" method="post">
+               <!-- 디자인 하려면 button->li로 넣어야 할듯 -->
+                <select name="location" id="loc">
+                    <optgroup label="도시명"></optgroup>
+                    <option value="지역명">지역명</option>
+                </select>
+                <select name="category" id="category">
+                    <optgroup label="대분류"></optgroup>
+                    <option value="주제명">주제명</option>
+                </select>
+                <select name="headcount" id="head">
+                    <option value="">여기는 직접입력으로(생긴건 드롭다운처럼)</option>
+                </select>
+           </form>
+           <div class="tags"> <ul><li>태그 1</li><li>태그 2</li></ul> </div>
+             </div>
+           <div class="cardContainer">
+
+           <div class="cards">
+               <ul>
+               <li class="card">
+                   카드정보
+               </li>
+           </ul>
+           </div>
+               <div class="scrollBt-left">왼쪽버튼</div>
+               <div class="scrollBt-right">오른쪽버튼</div>
+               <div class="hideToggle"><a> 숨기기 </a></div>
+        </div>
+           <div class="map">
+               <img src="{{ url_for('static', filename='map.png') }}"/>
+        </div>
+        {%include 'moreinfo.html' %}
+<script type="text/javascript" src="{{url_for('static',filename='js/main.js')}}"></script>
+<script type="text/javascript" src="{{url_for('static',filename='js/cardscroll.js')}}"></script>
+{% endblock %}
+{%block footer%}
+<!--팀원이나 간단한 정보들적기, 높이 낮아지면 사라짐-->
+{%endblock%}
