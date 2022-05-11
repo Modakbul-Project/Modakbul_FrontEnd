@@ -1,3 +1,9 @@
+<head>
+    <!-- fullcalender -->
+<link href='static/fullcalendar-5.11.0/lib/main.css' rel='stylesheet' />
+<script src="{{url_for('static',filename='fullcalendar-5.11.0/lib/main.js')}}"></script>
+
+</head>
 <div class="meetTitleNav">
               <div class="meetwrap">
               <div class="meetPic"><img src="{{ url_for('static', filename='누니.png') }}" alt=""></div>
@@ -29,8 +35,7 @@
                </div>
                    <div id="board">
                    </div>
-                   <div id="calender">
-                       calender
+                   <div id="calendar">
                    </div>
                    <div id="toggleBt">
                        toggle
@@ -134,4 +139,15 @@
         $(".subProfile").click(function(){
         $(".detailsBg").first().show();
     })
+</script>
+<script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth'
+        });
+        calendar.render();
+      });
+
 </script>

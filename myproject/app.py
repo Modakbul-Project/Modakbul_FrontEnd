@@ -45,7 +45,7 @@ def meet():
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
     #db저장
-    socketio.emit('my response', json, callback=messageReceived)
+    socketio.emit('my response', json)
 
 @app.route('/meetadmin')
 def meet_admin():
