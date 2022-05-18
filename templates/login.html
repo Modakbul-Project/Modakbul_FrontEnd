@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %} : 로그인{% endblock %}
+{% block head %}
+    {{ super() }}
+<link rel = "stylesheet" href="static/css/login.css">
+{% endblock %}
+{% block body %}
+           <div class="loginBox">
+               <a class="logo" href="/"> 모닥불 </a>
+               <div class="fromWrap"><form action="#" method="post">
+                   <input type="text" name="id" placeholder="아이디">
+                   <input type="text" name="password" placeholder="비밀번호">
+                   <input type="submit" value="로그인">
+               </form>
+               <button class="oauth" onclick="location.href='/google'">Google 아이디로 로그인</button></div>
+               <div class="loginOptions">
+                   <ul>
+                       <li>
+                           <a href="">비밀번호 찾기</a>
+                       </li>
+                       <li>
+                           <a href="">아이디 찾기</a>
+                       </li>
+                       <li>
+                            <a href="">회원가입</a>
+                       </li>
+                   </ul>
+               </div>
+           </div>
+{% endblock %}
+{% block footer %}
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %} : meetpage{% endblock %}
+{% block head %}
+    <link rel = "stylesheet" href="static/css/meetpage.css">
+    {{ super() }}
+{% endblock %}
+{% block body %}
+    {%if admin == 0 %}
+            {%include 'meetpage_main.html' %}
+    {%elif admin == 1 %}
+            {%include 'meetpage_admin.html' %}
+    {%endif%}
+{%include 'chatBox.html' %}
+{%include 'profile.html' %}
+<!-- 어드민 체크 -->
+{%include 'makenotice.html' %}
+{% endblock %}
+{%block footer%}
+<!--팀원이나 간단한 정보들적기, 높이 낮아지면 사라짐-->
+{%endblock%}
