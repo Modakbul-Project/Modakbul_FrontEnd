@@ -1,5 +1,8 @@
 <head>
+    <script src="{{ url_for('static', filename='jquery.mousewheel.js') }}"></script>
+    <script type="text/javascript" src="{{url_for('static',filename='js/cardscroll.js')}}"></script>
     <link rel = "stylesheet" href="static/css/mypage_meetcard.css">
+
 </head>
 <body>
 <div class="contents conatainer">
@@ -16,15 +19,20 @@
                 </div>
 
                <div class="cardContainer">
+                   <div class="scrollBt-left"><i class="fa-solid fa-caret-left"></i></div>
+               <div class="scrollBt-right"><i class="fa-solid fa-caret-right"></i></div>
                <div class="cards makeSelf">
                    <ul>
                    <li class="card">
-                       <a href="/meet">어쩌구모임</a>
+                       <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                       </a>
                    </li>
                        <!-- li 반복문 -->
                </ul>
-                   <div class="scrollBt-left">왼쪽버튼</div>
-                   <div class="scrollBt-right">오른쪽버튼</div>
+
                </div>
 
             </div>
@@ -40,15 +48,62 @@
                </form>
                 </div>
             <div class="cardContainer">
+                <div class="scrollBt-left"><i class="fa-solid fa-caret-left"></i></div>
+               <div class="scrollBt-right"><i class="fa-solid fa-caret-right"></i></div>
                <div class="cards participate">
                    <ul>
                    <li class="card">
-                       카드정보
+                        <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                        </a>
+                   </li>
+                       <li class="card">
+                        <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                        </a>
+                   </li>
+                       <li class="card">
+                        <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                        </a>
+                   </li>
+                       <li class="card">
+                        <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                        </a>
+                   </li>
+                       <li class="card">
+                        <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                        </a>
+                   </li>
+                       <li class="card">
+                        <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                        </a>
+                   </li>
+                       <li class="card">
+                        <a href="/meet">
+                       <div class="card-title">봄맞이 야외스터디 모집</div>
+                       <div class="card-category">서울시 강남구</div>
+                       <div class="card-tag">느긋한</div>
+                        </a>
                    </li>
                     <!-- li 반복문 -->
                </ul>
-                   <div class="scrollBt-left">왼쪽버튼</div>
-                   <div class="scrollBt-right">오른쪽버튼</div>
+
                </div>
 
             </div>

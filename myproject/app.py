@@ -1,7 +1,9 @@
 from flask import Flask, render_template, request, redirect, session, url_for, json
 from authlib.integrations.flask_client import OAuth
-from apiclient import discovery #캘린더 제작용
+#from apiclient import discovery #캘린더 제작용
 import os
+
+from pymongo import MongoClient
 
 from flask_socketio import SocketIO
 app = Flask(__name__) #플라스크 애플리케이션 생성
@@ -10,6 +12,16 @@ oauth = OAuth(app)
 socketio = SocketIO(app)
 with open('./static/client_secret2.json') as f:
     json_data=json.load(f)
+
+##
+@app.route('/mongo',methods=['GET'])
+def mongoTest():
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client.modakbul
+    collection = db.test
+    results = collection.find()
+    #client.close()
+    return render_template('mongo.html', data=results)
 
 @app.route('/')
 def test():
@@ -37,13 +49,16 @@ def my_meets():
 @app.route('/meet')
 def meet():
     if 'user' in session:  # 로그인 여부 확인
-        return render_template('meetpage.html', admin=0, user=session['user']['name'])
+        # 세션에서 유저정보 가져옴
+        return render_template('meetpage.html', admin=0, user=session['user']['name'], userimg=session['user']['picture'])
     else:
         return redirect('/login')
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
     print('received my event: ' + str(json))
+    json['user'] = session['user']['name']
+    json['userimg'] = session['user']['picture']
     #db저장
     socketio.emit('my response', json)
 

@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block title %} : meetpage{% endblock %}
 {% block head %}
+{{ super() }}
     <link rel = "stylesheet" href="static/css/meetpage.css">
-    {{ super() }}
+
 {% endblock %}
 {% block body %}
     {%if admin == 0 %}

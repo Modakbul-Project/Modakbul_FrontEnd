@@ -2,7 +2,7 @@
     <!-- fullcalender -->
 <link href='static/fullcalendar-5.11.0/lib/main.css' rel='stylesheet' />
 <script src="{{url_for('static',filename='fullcalendar-5.11.0/lib/main.js')}}"></script>
-
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 </head>
 <div class="meetTitleNav">
               <div class="meetwrap">
@@ -34,21 +34,29 @@
 
                </div>
                    <div id="board">
+                      <button><i class="fa-solid fa-plus"></i></button>
                    </div>
                    <div id="calendar">
                    </div>
-                   <div id="toggleBt">
-                       toggle
+                   <div class="toggleButtons">
+                       <div id="toggleBt">
+                       <i class="fa-solid fa-calendar-days"></i>
+                       <i class="fa-solid fa-note-sticky"></i>
                    </div>
                    <div id="membersBt">
-                       members
+                       <i class="fa-solid fa-users"></i>
                    </div>
+                   </div>
+
                    <script>
                     $('.members').hide();
                     $('#calender').hide();
+                     $('.fa-note-sticky').hide();
                     $('#toggleBt').click(function(){
                         $('#board').toggle();
+                        $('.fa-note-sticky').toggle();
                         $('#calender').toggle();
+                        $('.fa-calendar-days').toggle();
                     });
 
                     $('#membersBt').click(function(){
@@ -59,73 +67,10 @@
                <div class="meetNotice">
                    <h2>공지사항</h2>
                    <span>공지작성</span>
-                   <div class="notice">
+                   <div class="notice scrollbar">
                        <ul>
                        <li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li>
-                       <li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
-                       </li><li>
-                           공지1
-                       </li>
-                       <li>
-                           공지2
-                       </li>
-                       <li>
-                           공지3
+                           공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1
                        </li>
                    </ul>
                    </div>
@@ -148,6 +93,44 @@
           initialView: 'dayGridMonth'
         });
         calendar.render();
+        $(".fc-scroller").addClass("scrollbar");
       });
 
 </script>
+<script>
+  var x,y;
+  $(function(){
+    $("button").on("click",function(e){
+        //세션 상 내가 등록한 것만 움직이기 가능하게끔 어케하지
+        //여기서 소켓 1번 저장
+      $("<div class='draggable'><textarea name='sticky' id='' placeholder='memo here'></textarea></div>").prependTo("#board").draggable({containment:'#board'}).on("mouseup" ,function(e){
+      x = $(this).position().left;
+      y = $(this).position().top;
+      console.log(x,y);
+      //소켓 저장
+          $(this).children($('textarea')).on('keyup', function(){
+                 resize(this);
+                 //소켓 저장
+            });
+    });
+    });
+    //저장 내용물 - 좌표/메시지/텍스트에리어 사이즈
+
+   function drag(){
+     $('.draggable').draggable({containment:'.board_cnt'}).on("mouseup" ,function(e){
+      x = $(this).position().left;
+      y = $(this).position().top;
+      console.log(x,y);
+    });
+  };
+  });
+
+  function resize(area){
+        area.style.height = 'auto';
+        let height = area.scrollHeight; // 높이
+        area.style.height = `${height}px`;
+    }
+
+
+
+  </script>

@@ -56,13 +56,17 @@
                 </div>
                </div>
                <div id="toggleBt">
-                       this is toggle
+                       <div id="joinbt">참여 신청</div>
+                   <div id="membersbt">멤버 목록</div>
                    </div>
                    <script>
                     $('.sub').hide();
+                    $('#membersbt').hide();
                     $('#toggleBt').click(function(){
                         $('.sub').toggle();
+                        $('#joinbt').toggle();
                         $('.members').toggle();
+                        $('#membersbt').toggle();
                     });
                    </script>
                </div>

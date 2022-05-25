@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://kit.fontawesome.com/5f29a57a20.js" crossorigin="anonymous"></script>
     <link rel = "stylesheet" href="static/css/base.css">
     {% block head %}
     <title>모닥불{% block title %}{% endblock %}</title>
@@ -11,13 +12,9 @@
 <body>
    <div class="main container">
        <header class="container">
-           <a class="logo" href="/"> 모닥불 </a>
+           <a class="logo" href="/"><img src="{{ url_for('static', filename='logo.png') }}" alt=""></a>
            <nav class="navbar">
-           <div class="search"><form action="#" method="post">
-               <input type="text" name="keyword" placeholder="검색">
-               <input type="submit" value="src">
-           </form></div>
-           <button class="mypage"><a href="/mypage">mypage</a></button>
+           <a href="/mypage"><i class="fa-solid fa-user"></i></a>
            </nav>
         </header>
        <div class="contents conatainer">
