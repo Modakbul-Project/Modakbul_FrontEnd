@@ -1,54 +1,150 @@
 <head>
     <!-- fullcalender -->
-<link href='static/fullcalendar-5.11.0/lib/main.css' rel='stylesheet' />
-<script src="{{url_for('static',filename='fullcalendar-5.11.0/lib/main.js')}}"></script>
-        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <link href='static/fullcalendar-5.11.0/lib/main.css' rel='stylesheet'/>
+    <script src="{{url_for('static',filename='fullcalendar-5.11.0/lib/main.js')}}"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
 </head>
+<script>
+  var x,y;
+  $(function(){
+       var socket = io.connect('http://' + document.domain + ':' + location.port);
+
+      socket.on( 'connect', function() {
+        socket.emit( 'postit', {
+          data: 'cnt'
+        } )
+
+        $("button").on("click",function(e){
+            makedrag();
+        });
+        //저장 내용물 - 좌표/메시지/텍스트에리어 사이즈
+      });
+
+    //불러오기
+    socket.on( 'postitres', function( msg ) {
+        if( typeof msg.id !== 'undefined' ) {
+            if(msg.user != "{{user}}"){
+                console.log("이동");
+                makememo(msg.id,msg.x,msg.y,msg.message);
+            }
+        }
+      })
+  });
+
+  function resize(area){
+        area.style.height = 'auto';
+        let height = area.scrollHeight; // 높이
+        area.style.height = `${height}px`;
+    }
+
+    function makedrag(id,posx,posy,message){
+        if(id == undefined){id='None'}
+        if(message == undefined){message = ''}
+        console.log(message);
+        message = message.replace(/&lt;br&gt;/gi,"\n");
+        console.log(message);
+        $("<div class='draggable' id='"+id+"' style='top:"+posy+"px; left:"+posx+"px;'><textarea class='scrollbar' name='sticky' id='' placeholder='memo here'>"+message+"</textarea></div>").appendTo("#board").draggable({containment:'#board'}).on("mouseup" ,function(e){
+          x = $(this).position().left;
+          y = $(this).position().top;
+          message = $(this).children($('textarea')).val();
+          message = message.replace(/\n/gi,"<br>");
+            socket.emit( 'postit', {
+                id : id,
+                x : x,
+                y : y,
+                message : message,
+              } )
+             /*
+              $(this).children($('textarea')).on('keyup', function(){
+                     resize(this);
+                     //소켓 저장
+                    // socket.emit('postit',{
+                    //    message = $(this).children($('textarea')).val();
+                    // })
+              });
+              */
+          var newpost = $(this);
+          socket.on( 'newpostit', function( msg ) {
+             if(msg.user == "{{user}}"){
+                //this에 id값 추가해줌
+                id = msg.id
+                newpost.attr('id',msg.id);
+                console.log(newpost.attr('id'));
+             }
+         })
+         console.log(id, x,y, message);
+
+        });
+    }
+
+    function makememo(id,x,y,message){
+        console.log(id, x,y,message);
+        message = message.replace(/&lt;br&gt;/gi,"<br>");
+        if($("#"+id).length>0){
+            $("#"+id).css({"top" : y, "left" : x});
+            $("#"+id).children($('p')).html(message);
+        }else{
+            $("<div class='memo' id='"+id+"'><p class='scrollbar'>"+message+"</p></div>").appendTo("#board").css({"top" : y, "left" : x});
+        }
+    }
+
+
+
+
+</script>
+
 <div class="meetTitleNav">
-              <div class="meetwrap">
-              <div class="meetPic"><img src="{{ url_for('static', filename='누니.png') }}" alt=""></div>
-               <h1 class="meetTitle">모임명</h1>
-               </div>
-               <a class="meetOption" href="/meetadmin">모임관리</a>
-           </div>
-           <div class="meetContentsWrap">
-               <div class="meetBoard">
-                  <div class="members">
-                   <div class="profileList">
+    <div class="meetwrap">
+        <div class="meetPic"><img src="{{ url_for('static', filename='누니.png') }}" alt=""></div>
+        <h1 class="meetTitle">모임명</h1>
+    </div>
+    <a class="meetOption" href="/meetadmin">모임관리</a>
+</div>
+<div class="meetContentsWrap">
+    <div class="meetBoard">
+        <div class="members">
+            <div class="profileList">
 
-                       <div class="subProfile">
-                        <div class="profilePic">
-                            <img src="{{ url_for('static', filename='누니.png') }}" alt="">
-                        </div>
-                        <div class="subName">김수한무거북</div>
-                        <div class="subLv">Lv.23</div>
-                   </div>
-                   <div class="subProfile">
-                        <div class="profilePic">
-                            <img src="{{ url_for('static', filename='누니.png') }}" alt="">
-                        </div>
-                        <div class="subName">내이름</div>
-                        <div class="subLv">Lv.23</div>
-                   </div>
+                <div class="subProfile">
+                    <div class="profilePic">
+                        <img src="{{ url_for('static', filename='누니.png') }}" alt="">
+                    </div>
+                    <div class="subName">김수한무거북</div>
+                    <div class="subLv">Lv.23</div>
                 </div>
+                <div class="subProfile">
+                    <div class="profilePic">
+                        <img src="{{ url_for('static', filename='누니.png') }}" alt="">
+                    </div>
+                    <div class="subName">내이름</div>
+                    <div class="subLv">Lv.23</div>
+                </div>
+            </div>
 
-               </div>
-                   <div id="board">
-                      <button><i class="fa-solid fa-plus"></i></button>
-                   </div>
-                   <div id="calendar">
-                   </div>
-                   <div class="toggleButtons">
-                       <div id="toggleBt">
-                       <i class="fa-solid fa-calendar-days"></i>
-                       <i class="fa-solid fa-note-sticky"></i>
-                   </div>
-                   <div id="membersBt">
-                       <i class="fa-solid fa-users"></i>
-                   </div>
-                   </div>
+        </div>
+        <div id="board">
+            {% for i in data %}
+            {%if i.user == user%}
+            <script> makedrag("{{i._id}}", {{i.x}}, {{i.y}}, "{{i.message}}")</script>
+            {%else%}
+            <script> makememo("{{i._id}}", {{i.x}}, {{i.y}}, "{{i.message}}")</script>
+            {%endif%}
+            {%endfor%}
+            <button><i class="fa-solid fa-plus"></i></button>
+        </div>
+        <div id="calendar">
+        </div>
+        <div class="toggleButtons">
+            <div id="toggleBt">
+                <i class="fa-solid fa-calendar-days"></i>
+                <i class="fa-solid fa-note-sticky"></i>
+            </div>
+            <div id="membersBt">
+                <i class="fa-solid fa-users"></i>
+            </div>
+        </div>
 
-                   <script>
+        <script>
                     $('.members').hide();
                     $('#calender').hide();
                      $('.fa-note-sticky').hide();
@@ -62,21 +158,23 @@
                     $('#membersBt').click(function(){
                         $('.members').toggle();
                     });
-                   </script>
-               </div>
-               <div class="meetNotice">
-                   <h2>공지사항</h2>
-                   <span>공지작성</span>
-                   <div class="notice scrollbar">
-                       <ul>
-                       <li>
-                           공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1
-                       </li>
-                   </ul>
-                   </div>
 
-               </div>
-           </div>
+
+        </script>
+    </div>
+    <div class="meetNotice">
+        <h2>공지사항</h2>
+        <span>공지작성</span>
+        <div class="notice scrollbar">
+            <ul>
+                <li>
+                    공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1공지1
+                </li>
+            </ul>
+        </div>
+
+    </div>
+</div>
 <script>
     $(".meetNotice span").click(function(){
         $(".detailsBg").eq(1).show();
@@ -84,6 +182,8 @@
         $(".subProfile").click(function(){
         $(".detailsBg").first().show();
     })
+
+
 </script>
 <script>
 
@@ -96,41 +196,6 @@
         $(".fc-scroller").addClass("scrollbar");
       });
 
+
+
 </script>
-<script>
-  var x,y;
-  $(function(){
-    $("button").on("click",function(e){
-        //세션 상 내가 등록한 것만 움직이기 가능하게끔 어케하지
-        //여기서 소켓 1번 저장
-      $("<div class='draggable'><textarea name='sticky' id='' placeholder='memo here'></textarea></div>").prependTo("#board").draggable({containment:'#board'}).on("mouseup" ,function(e){
-      x = $(this).position().left;
-      y = $(this).position().top;
-      console.log(x,y);
-      //소켓 저장
-          $(this).children($('textarea')).on('keyup', function(){
-                 resize(this);
-                 //소켓 저장
-            });
-    });
-    });
-    //저장 내용물 - 좌표/메시지/텍스트에리어 사이즈
-
-   function drag(){
-     $('.draggable').draggable({containment:'.board_cnt'}).on("mouseup" ,function(e){
-      x = $(this).position().left;
-      y = $(this).position().top;
-      console.log(x,y);
-    });
-  };
-  });
-
-  function resize(area){
-        area.style.height = 'auto';
-        let height = area.scrollHeight; // 높이
-        area.style.height = `${height}px`;
-    }
-
-
-
-  </script>

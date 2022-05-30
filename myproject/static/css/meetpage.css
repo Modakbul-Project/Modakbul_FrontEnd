@@ -86,18 +86,19 @@
         background-color:rgba(0,0,0,0.5);
     }
 
-    .draggable{
+    .draggable, .memo{
         position: absolute;
         background-color:#ffe294;
         padding:10px;
         white-space:normal;
         word-break:break-all;
-        min-width: 100px;
+        width: 160px;
         min-height:100px;
         filter:drop-shadow(1px 3px 3px rgba(0,0,0,0.3));
+        overflow : hidden;
     }
 
-    .draggable textarea{
+    .draggable textarea, .memo p{
         border: 0;
         resize:none;
         width:100%;
@@ -105,7 +106,9 @@
         padding: 0;
         margin: 0;
         background-color: transparent;
-        overflow:inherit;
+        overflow-y:scroll;
+        font-size : 9pt;
+        text-align:justify;
     }
 
     .draggable textarea:focus{

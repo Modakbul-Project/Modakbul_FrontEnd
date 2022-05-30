@@ -3,6 +3,8 @@ from authlib.integrations.flask_client import OAuth
 #from apiclient import discovery #캘린더 제작용
 import os
 
+from bson.objectid import ObjectId
+from bson.json_util import loads, dumps
 from pymongo import MongoClient
 
 from flask_socketio import SocketIO
@@ -49,8 +51,11 @@ def my_meets():
 @app.route('/meet')
 def meet():
     if 'user' in session:  # 로그인 여부 확인
-        # 세션에서 유저정보 가져옴
-        return render_template('meetpage.html', admin=0, user=session['user']['name'], userimg=session['user']['picture'])
+        client = MongoClient('mongodb://localhost:27017/')
+        db = client.modakbul
+        collection = db.modakbul
+        results = collection.find()
+        return render_template('meetpage.html', admin=0, data=results, user=session['user']['name'])
     else:
         return redirect('/login')
 
@@ -61,6 +66,24 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     json['userimg'] = session['user']['picture']
     #db저장
     socketio.emit('my response', json)
+
+@socketio.on('postit')
+def postit(json,methods=['GET', 'POST']):
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client.modakbul
+    collection = db.modakbul
+    if 'data' in json:
+        print('connect postit')
+    else:
+        json['user'] = session['user']['name']
+        if json['id'] != 'None':
+            result = collection.update_one({"_id": ObjectId(json["id"])}, {"$set": {"x": json["x"], "y": json["y"], "message": json["message"]}})
+            socketio.emit('postitres', json)
+        else:
+            result = collection.insert_one({"x": json["x"], "y": json["y"], "message": json["message"], "user":session["user"]["name"]})
+            json['id'] = str(result.inserted_id)
+            socketio.emit('newpostit',json)
+
 
 @app.route('/meetadmin')
 def meet_admin():
@@ -109,5 +132,5 @@ def logout():
   return redirect('/')
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
    # app.run('0.0.0.0', port=5000, debug=True)
