@@ -4,7 +4,6 @@ from authlib.integrations.flask_client import OAuth
 import os
 
 from bson.objectid import ObjectId
-from bson.json_util import loads, dumps
 from pymongo import MongoClient
 
 from flask_socketio import SocketIO
@@ -54,16 +53,25 @@ def meet():
         client = MongoClient('mongodb://localhost:27017/')
         db = client.modakbul
         collection = db.modakbul
+        chatLog = db.chatLog.find()
         results = collection.find()
-        return render_template('meetpage.html', admin=0, data=results, user=session['user']['name'])
+        return render_template('meetpage.html', admin=0, data=results, user=session['user']['name'], chatLog = chatLog)
     else:
         return redirect('/login')
 
 @socketio.on('my event')
 def handle_my_custom_event(json, methods=['GET', 'POST']):
+    client = MongoClient('mongodb://localhost:27017/')
+    db = client.modakbul
+    collection = db.chatLog
+
     print('received my event: ' + str(json))
+
     json['user'] = session['user']['name']
     json['userimg'] = session['user']['picture']
+
+    result = collection.insert_one(
+        {"message": json["message"], "user": json["user"], "userimg": json["userimg"]})
     #db저장
     socketio.emit('my response', json)
 
@@ -76,13 +84,20 @@ def postit(json,methods=['GET', 'POST']):
         print('connect postit')
     else:
         json['user'] = session['user']['name']
-        if json['id'] != 'None':
-            result = collection.update_one({"_id": ObjectId(json["id"])}, {"$set": {"x": json["x"], "y": json["y"], "message": json["message"]}})
-            socketio.emit('postitres', json)
-        else:
-            result = collection.insert_one({"x": json["x"], "y": json["y"], "message": json["message"], "user":session["user"]["name"]})
+        if json['id'] == 'None':
+            result = collection.insert_one(
+                {"x": json["x"], "y": json["y"], "message": json["message"], "user": session["user"]["name"]})
             json['id'] = str(result.inserted_id)
-            socketio.emit('newpostit',json)
+            socketio.emit('newpostit', json)
+        elif 'del' in json:
+            if json['user'] == session['user']['name']:
+                collection.delete_one({"_id": ObjectId(json["id"])})
+                socketio.emit('delres',json)
+        else:
+            result = collection.update_one({"_id": ObjectId(json["id"])},
+                                           {"$set": {"x": json["x"], "y": json["y"], "message": json["message"]}})
+            socketio.emit('postitres', json)
+
 
 
 @app.route('/meetadmin')

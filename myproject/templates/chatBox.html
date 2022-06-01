@@ -23,8 +23,19 @@
                <div class="bubble">aa</div>
            </div>
            -->
-               </div>
-               </div>
+               {% for i in chatLog %}
+                {%if i.user == user %}
+                    <div class="yourmessage">
+                        <div class="bubble">{{i.message}}</div>
+                    </div>
+                {%else%}
+                    <div class="othermessage">
+                        <div class="chatimg"><img src={{i.userimg}} alt=""></div><span>{{i.user}}</span><div class="bubble">{{i.message}}</div>
+                    </div>
+               {%endif%}
+               {%endfor%}
+           </div>
+           </div>
 
     <form action="" method="POST">
       <input type="hidden" class="username" style='font-size:15px;' value="{{ user }}"/>

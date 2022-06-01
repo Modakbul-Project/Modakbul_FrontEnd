@@ -15,17 +15,34 @@
         } )
 
         $("button").on("click",function(e){
-            makedrag();
+            makedrag('',0,0,'','{{user}}');
         });
         //저장 내용물 - 좌표/메시지/텍스트에리어 사이즈
       });
+
+      $(document).on('click', '.fa-trash-can', function(){
+        socket.emit( 'postit', {
+                del : 'delplz',
+                id : $(this).closest('.draggable').attr('id'),
+                user : '{{user}}'
+              });
+        $(this).closest('.draggable').detach();
+    });
 
     //불러오기
     socket.on( 'postitres', function( msg ) {
         if( typeof msg.id !== 'undefined' ) {
             if(msg.user != "{{user}}"){
-                console.log("이동");
-                makememo(msg.id,msg.x,msg.y,msg.message);
+                //console.log("이동");
+                makememo(msg.id,msg.x,msg.y,msg.message,msg.user);
+            }
+        }
+      })
+
+      socket.on( 'delres', function( msg ) {
+        if( typeof msg.id !== 'undefined' ) {
+            if(msg.user != "{{user}}"){
+                $('#'+msg.id).detach();
             }
         }
       })
@@ -37,13 +54,12 @@
         area.style.height = `${height}px`;
     }
 
-    function makedrag(id,posx,posy,message){
-        if(id == undefined){id='None'}
+    function makedrag(id,posx,posy,message,user){
+        if(id == undefined || id == ''){id='None'}
         if(message == undefined){message = ''}
-        console.log(message);
         message = message.replace(/&lt;br&gt;/gi,"\n");
-        console.log(message);
-        $("<div class='draggable' id='"+id+"' style='top:"+posy+"px; left:"+posx+"px;'><textarea class='scrollbar' name='sticky' id='' placeholder='memo here'>"+message+"</textarea></div>").appendTo("#board").draggable({containment:'#board'}).on("mouseup" ,function(e){
+
+        $("<div class='draggable' id='"+id+"' style='top:"+posy+"px; left:"+posx+"px;'><textarea class='scrollbar' name='sticky' id='' placeholder='memo here'>"+message+"</textarea><p><span>"+user+"</span><span><i class='fa-solid fa-trash-can'></i></span></p></div>").appendTo("#board").draggable({containment:'#board'}).on("mouseup" ,function(e){
           x = $(this).position().left;
           y = $(this).position().top;
           message = $(this).children($('textarea')).val();
@@ -69,22 +85,22 @@
                 //this에 id값 추가해줌
                 id = msg.id
                 newpost.attr('id',msg.id);
-                console.log(newpost.attr('id'));
+                //console.log(newpost.attr('id'));
              }
          })
-         console.log(id, x,y, message);
+         //console.log(id, x,y, message);
 
         });
     }
 
-    function makememo(id,x,y,message){
-        console.log(id, x,y,message);
+    function makememo(id,x,y,message,user){
+        //console.log(id, x,y,message);
         message = message.replace(/&lt;br&gt;/gi,"<br>");
         if($("#"+id).length>0){
             $("#"+id).css({"top" : y, "left" : x});
-            $("#"+id).children($('p')).html(message);
+            $("#"+id).children($('p')).first().html(message);
         }else{
-            $("<div class='memo' id='"+id+"'><p class='scrollbar'>"+message+"</p></div>").appendTo("#board").css({"top" : y, "left" : x});
+            $("<div class='memo' id='"+id+"'><p class='scrollbar'>"+message+"</p><p>"+user+"</p></div>").appendTo("#board").css({"top" : y, "left" : x});
         }
     }
 
@@ -125,9 +141,9 @@
         <div id="board">
             {% for i in data %}
             {%if i.user == user%}
-            <script> makedrag("{{i._id}}", {{i.x}}, {{i.y}}, "{{i.message}}")</script>
+            <script> makedrag("{{i._id}}", {{i.x}}, {{i.y}}, "{{i.message}}","{{i.user}}")</script>
             {%else%}
-            <script> makememo("{{i._id}}", {{i.x}}, {{i.y}}, "{{i.message}}")</script>
+            <script> makememo("{{i._id}}", {{i.x}}, {{i.y}}, "{{i.message}}", "{{i.user}}")</script>
             {%endif%}
             {%endfor%}
             <button><i class="fa-solid fa-plus"></i></button>
