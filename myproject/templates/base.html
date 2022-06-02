@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://kit.fontawesome.com/5f29a57a20.js" crossorigin="anonymous"></script>
-    <link rel = "stylesheet" href="static/css/base.css">
+    <link rel = "stylesheet" href="{{url_for('static',filename='css/base.css')}}">
     {% block head %}
     <title>모닥불{% block title %}{% endblock %}</title>
     {% endblock %}

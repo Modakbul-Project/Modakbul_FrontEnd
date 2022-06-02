@@ -6,7 +6,7 @@ import os
 from bson.objectid import ObjectId
 from pymongo import MongoClient
 
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, join_room
 app = Flask(__name__) #플라스크 애플리케이션 생성
 app.config['SECRET_KEY']=os.urandom(12)
 oauth = OAuth(app)
@@ -47,14 +47,20 @@ def my_meets():
     else:
         return redirect('/login')
 
-@app.route('/meet')
-def meet():
+@app.route('/meet/<id>')
+def meet_page(id=None):
     if 'user' in session:  # 로그인 여부 확인
+        #db 불러오기
         client = MongoClient('mongodb://localhost:27017/')
         db = client.modakbul
         collection = db.modakbul
-        chatLog = db.chatLog.find()
-        results = collection.find()
+
+        #모임id로 채팅방이름 만들기
+        session['room'] = id
+
+        #테이블에 모임id필드 추가하여 id에 맞는 로그만 불러오기
+        chatLog = db.chatLog.find({'room': id})
+        results = collection.find({'room': id})
         return render_template('meetpage.html', admin=0, data=results, user=session['user']['name'], chatLog = chatLog)
     else:
         return redirect('/login')
@@ -66,14 +72,15 @@ def handle_my_custom_event(json, methods=['GET', 'POST']):
     collection = db.chatLog
 
     print('received my event: ' + str(json))
-
     json['user'] = session['user']['name']
     json['userimg'] = session['user']['picture']
+    if 'data' in json:
+        join_room(session.get('room'))
+    else:
+        result = collection.insert_one(
+            {"message": json["message"], "user": json["user"], "userimg": json["userimg"], "room": session.get('room')})
 
-    result = collection.insert_one(
-        {"message": json["message"], "user": json["user"], "userimg": json["userimg"]})
-    #db저장
-    socketio.emit('my response', json)
+    socketio.emit('my response', json, room=session.get('room'))
 
 @socketio.on('postit')
 def postit(json,methods=['GET', 'POST']):
@@ -82,21 +89,22 @@ def postit(json,methods=['GET', 'POST']):
     collection = db.modakbul
     if 'data' in json:
         print('connect postit')
+        join_room(session.get('room'))
     else:
         json['user'] = session['user']['name']
         if json['id'] == 'None':
             result = collection.insert_one(
-                {"x": json["x"], "y": json["y"], "message": json["message"], "user": session["user"]["name"]})
+                {"x": json["x"], "y": json["y"], "message": json["message"], "user": session["user"]["name"], "room": session.get('room')})
             json['id'] = str(result.inserted_id)
-            socketio.emit('newpostit', json)
+            socketio.emit('newpostit', json, room=session.get('room'))
         elif 'del' in json:
             if json['user'] == session['user']['name']:
                 collection.delete_one({"_id": ObjectId(json["id"])})
-                socketio.emit('delres',json)
+                socketio.emit('delres',json, room=session.get('room'))
         else:
             result = collection.update_one({"_id": ObjectId(json["id"])},
                                            {"$set": {"x": json["x"], "y": json["y"], "message": json["message"]}})
-            socketio.emit('postitres', json)
+            socketio.emit('postitres', json, room=session.get('room'))
 
 
 
