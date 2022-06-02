@@ -1,0 +1,81 @@
+@charset "utf-8";
+
+    .contents .contents{
+        display: flex;
+        width:100%;
+        justify-content:center;
+        flex-direction: column;
+        overflow: hidden;
+            background-color:#ff9898;
+    }
+
+    .myPage{
+        flex:auto;
+        display: flex;
+        align-items: stretch;
+        overflow:hidden;
+    }
+
+    .sidePage{
+       display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-around;
+    }
+
+    .sideTop{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width:200px;
+        padding : 2rem;
+        text-align: center;
+    }
+
+    .profilepic{
+        width:150px;
+        height:150px;
+        background-color: lightgray;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+}
+    .profilepic img{
+        width:100%;
+    }
+
+    .sidePage .listTitle{
+        padding-top: 1rem;
+    }
+
+    .makeMeet{
+        margin-top:1rem;
+        width: 100%;
+        height:40px;
+        border-radius: 30px;
+        background-color : #ea5a5a;
+        border:0;
+        color:#fff;
+        font-weight:900;
+    }
+
+    .level{
+        font-size: 13px;
+        color:gray;
+    }
+
+    .sideOptions{
+        list-style: none;
+        padding-left: 0;
+        text-align: left;
+    }
+
+    .sideOptions li a{
+        cursor : pointer;
+    }
+
+    .logout:link, .logout:visited, .logout{
+        color:gray;
+    }

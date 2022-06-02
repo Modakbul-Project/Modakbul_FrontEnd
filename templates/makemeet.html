@@ -1,0 +1,75 @@
+<head>
+<link rel = "stylesheet" href="static/css/makemeet.css">
+</head>
+<body>
+    <div class="detailsBg">
+        <div class="detailsWrap">
+           <form action="#">
+            <div class="detailTitle">
+               <button>X</button>
+                <div class="meetPic"><img src="" alt=""></div>
+                <div class="formTitle">
+                    <input type="text" placeholder="모임명">
+                    <input type="text" placeholder="모집글 제목">
+                    <span>비공개 <input type="checkbox"></span>
+                </div>
+            </div>
+            <div class="detailTags">
+               <h5>분류 *</h5>
+                <ul id="bigTag">
+                    <li>
+                    <select name="location" id="loc">
+                        <optgroup label="도시명"></optgroup>
+                        <option value="지역명">지역</option>
+                    </select>
+                   </li>
+                    <li>
+                    <select name="category" id="category">
+                        <optgroup label="대분류"></optgroup>
+                    <option value="주제명">주제</option>
+                    </select>
+                    </li>
+                    <li>
+                    <select name="headcount" id="head">
+                    <option value="">인원수</option>
+                    </select>  
+                    </li>
+                </ul>
+                <h5>태그</h5>
+                <ul id="makeTag">
+                   <li>
+                   <select name="tag" id="tag">
+                    <option value="">태그</option>
+                    </select>  
+                    </li>
+                    <li>
+                        <input type="text" placeholder="직접 작성하기">
+                    </li> 
+                    <li>
+                        <button onclick="">추가</button>
+                    </li>
+                </ul>
+                <ul id="smallTag">
+                    <li>느긋한</li>
+                    <li>주제자유</li>
+                </ul>
+            </div>
+            <div class="detailContents">
+              <textarea name="meetDetail" id="meetDetail">
+                  <img src="map.png" alt="">
+                본문 내용 lorem ipsum
+              </textarea>
+            </div>
+            <div class="detailFooter">
+                    <submit>모임 등록</submit>
+            </div>
+            </form>
+        </div>
+    </div>
+    <script>
+    $(".detailsBg").hide();
+        $(".detailTitle button").click(function(){
+            $(".detailsBg").hide();
+        })
+    </script>
+</body>

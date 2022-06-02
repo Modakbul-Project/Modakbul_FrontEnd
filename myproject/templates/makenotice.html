@@ -1,0 +1,30 @@
+<head>
+    <meta charset="UTF-8">
+    <link rel = "stylesheet" href="{{url_for('static',filename='css/makenotice.css')}}">
+</head>
+<body>
+    <div class="detailsBg">
+        <div class="detailsWrap">
+           <form action="#">
+            <div class="detailTitle">
+               <button>X</button>
+                <div class="formTitle">
+                    <input type="text" placeholder="공지 제목">
+                </div>
+            </div>
+            <div class="detailContents">
+              <textarea name="meetDetail" id="meetDetail"></textarea>
+            </div>
+            <div class="detailFooter">
+                    <submit>등록</submit>
+            </div>
+            </form>
+        </div>
+    </div>
+    <script>
+    $(".detailsBg").hide();
+        $(".detailTitle button").click(function(){
+            $(".detailsBg").hide();
+        })
+    </script>
+</body>
